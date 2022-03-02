@@ -12,8 +12,8 @@ const params = (new URL(document.location)).searchParams;
 
 let randomHue = Math.random() * 360;
 
-let sunColor = new THREE.Color(params.get("sunColor") || ("hsl(" + randomHue + ", 100%, 95%)"));
-let shadeColor = new THREE.Color(params.get("shadeColor") || ("hsl(" + (randomHue + (Math.random() > Math.random() + 0.5 ? -(Math.random() + 0.5) : -1) * 20) + ", 30%, 50%)"));
+let sunColor = new THREE.Color(params.get("sunColor") || ("#ffffff"));
+let shadeColor = new THREE.Color(params.get("shadeColor") || ("hsl(" + randomHue + ", 30%, 50%)"));
 let floorColor = new THREE.Color(params.get("floorColor") || "#aaaaaa");
 let backgroundColor = new THREE.Color(params.get("backgroundColor") || "#ffffff");
 
