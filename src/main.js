@@ -14,7 +14,7 @@ let randomHue = Math.random() * 360;
 
 let sunColor = new THREE.Color(params.get("sunColor") || ("#ffffff"));
 let shadeColor = new THREE.Color(params.get("shadeColor") || ("hsl(" + randomHue + ", 30%, 50%)"));
-let floorColor = new THREE.Color(params.get("floorColor") || "#aaaaaa");
+let floorColor = new THREE.Color(params.get("floorColor") || "#DDDDDD");
 let backgroundColor = new THREE.Color(params.get("backgroundColor") || "#ffffff");
 
 let stats = false;
