@@ -1,4 +1,3 @@
-import TwitchChat from "twitch-chat-emotes-threejs";
 import * as THREE from "three";
 import Stats from "stats-js";
 import "./main.css";
@@ -7,56 +6,42 @@ import "./main.css";
 ** connect to twitch chat
 */
 
-// a default array of twitch channels to join
-let channels = ['moonmoon'];
 
-// the following few lines of code will allow you to add ?channels=channel1,channel2,channel3 to the URL in order to override the default array of channels
-const query_vars = {};
-const query_parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
-	query_vars[key] = value;
-});
 
-if (query_vars.channels) {
-	channels = query_vars.channels.split(',');
-}
+const params = (new URL(document.location)).searchParams;
+
+let randomHue = Math.random() * 360;
+
+let sunColor = new THREE.Color(params.get("sunColor") || ("hsl(" + randomHue + ", 100%, 95%)"));
+let shadeColor = new THREE.Color(params.get("shadeColor") || ("hsl(" + (randomHue + (Math.random() > Math.random() + 0.5 ? -(Math.random() + 0.5) : -1) * 20) + ", 30%, 50%)"));
+let floorColor = new THREE.Color(params.get("floorColor") || "#aaaaaa");
+let backgroundColor = new THREE.Color(params.get("backgroundColor") || "#ffffff");
 
 let stats = false;
-if (query_vars.stats) {
+if (params.get("stats") === "true") {
 	stats = new Stats();
 	stats.showPanel(1);
 	document.body.appendChild(stats.dom);
 }
 
-const ChatInstance = new TwitchChat({
-	THREE,
-
-	// If using planes, consider using MeshBasicMaterial instead of SpriteMaterial
-	materialType: THREE.SpriteMaterial,
-
-	// Passed to material options
-	materialOptions: {
-		transparent: true,
-	},
-
-	channels,
-	maximumEmoteLimit: 3,
-})
-
 /*
 ** Initiate ThreejS scene
 */
 
+const cameraDistance = 5;
+
 const camera = new THREE.PerspectiveCamera(
-	70,
+	50,
 	window.innerWidth / window.innerHeight,
 	0.1,
-	1000
+	cameraDistance * 2
 );
-camera.position.z = 5;
 
 const scene = new THREE.Scene();
 const renderer = new THREE.WebGLRenderer({ antialias: false });
-renderer.setSize(window.innerWidth, window.innerHeight);
+
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
 function resize() {
 	camera.aspect = window.innerWidth / window.innerHeight;
@@ -68,6 +53,7 @@ window.addEventListener('DOMContentLoaded', () => {
 	window.addEventListener('resize', resize);
 	if (stats) document.body.appendChild(stats.dom);
 	document.body.appendChild(renderer.domElement);
+	resize();
 	draw();
 })
 
@@ -81,59 +67,47 @@ function draw() {
 	const delta = Math.min(1, Math.max(0, (performance.now() - lastFrame) / 1000));
 	lastFrame = performance.now();
 
-
-	for (let index = sceneEmoteArray.length - 1; index >= 0; index--) {
-		const element = sceneEmoteArray[index];
-		element.position.addScaledVector(element.velocity, delta);
-		if (element.timestamp + element.lifespan < Date.now()) {
-			sceneEmoteArray.splice(index, 1);
-			scene.remove(element);
-		} else {
-			element.update();
-		}
-	}
+	camera.position.set(Math.sin(performance.now() / 1000) * 1, 1, Math.cos(performance.now() / 1000) * 1).normalize().multiplyScalar(cameraDistance);
+	camera.lookAt(0, 0.5, 0);
 
 	renderer.render(scene, camera);
 	if (stats) stats.end();
 };
 
 
-/*
-** Handle Twitch Chat Emotes
-*/
-const sceneEmoteArray = [];
-ChatInstance.listen((emotes) => {
-	const group = new THREE.Group();
-	group.lifespan = 5000;
-	group.timestamp = Date.now();
 
-	let i = 0;
-	emotes.forEach((emote) => {
-		const sprite = new THREE.Sprite(emote.material);
-		sprite.position.x = i;
-		group.add(sprite);
-		i++;
-	})
+scene.background = new THREE.Color(backgroundColor);
+scene.fog = new THREE.Fog(backgroundColor, cameraDistance, cameraDistance * 2);
 
-	// Set velocity to a random normalized value
-	group.velocity = new THREE.Vector3(
-		(Math.random() - 0.5) * 2,
-		(Math.random() - 0.5) * 2,
-		(Math.random() - 0.5) * 2
-	);
-	group.velocity.normalize();
+const sunShadowWidth = 10;
+const sunLight = new THREE.DirectionalLight(sunColor.clone().sub(shadeColor.clone()), 1);
+sunLight.position.set(-1, 1.1, 0.5).normalize().multiplyScalar(10);
+sunLight.castShadow = true;
+sunLight.shadow.mapSize.width = 2048;
+sunLight.shadow.mapSize.height = 2048;
+sunLight.shadow.camera.near = 0.1;
+sunLight.shadow.camera.far = 30;
+sunLight.shadow.camera.left = -sunShadowWidth;
+sunLight.shadow.camera.right = sunShadowWidth;
+sunLight.shadow.camera.top = sunShadowWidth;
+sunLight.shadow.camera.bottom = -sunShadowWidth;
+scene.add(sunLight);
 
-	group.update = () => { // called every frame
-		let progress = (Date.now() - group.timestamp) / group.lifespan;
-		if (progress < 0.25) { // grow to full size in first quarter
-			group.scale.setScalar(progress * 4);
-		} else if (progress > 0.75) { // shrink to nothing in last quarter
-			group.scale.setScalar((1 - progress) * 4);
-		} else { // maintain full size in middle
-			group.scale.setScalar(1);
-		}
-	}
+const ambientLight = new THREE.AmbientLight(shadeColor, 1);
+scene.add(ambientLight);
 
-	scene.add(group);
-	sceneEmoteArray.push(group);
-});
+const floor = new THREE.Mesh(
+	new THREE.PlaneBufferGeometry(cameraDistance * 10, cameraDistance * 10, 1, 1),
+	new THREE.MeshLambertMaterial({ color: floorColor })
+);
+floor.rotation.x = -Math.PI / 2;
+floor.receiveShadow = true;
+scene.add(floor);
+
+const cube = new THREE.Mesh(
+	new THREE.BoxBufferGeometry(1, 1, 1),
+	new THREE.MeshLambertMaterial({ color: 0xffffff })
+);
+cube.castShadow = true;
+cube.position.set(0, 0.5, 0);
+scene.add(cube);
