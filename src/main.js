@@ -43,6 +43,9 @@ window.addEventListener("DOMContentLoaded", () => {
 		sunColor.sub(shadeColor);
 		sunLight.color = sunColor;
 		ambientLight.color = shadeColor;
+
+		scene.fog.color = shadeColor;
+		scene.background = shadeColor;
 	});
 });
 
