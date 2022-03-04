@@ -14,7 +14,7 @@ let randomHue = Math.random() * 360;
 let sunColor = new THREE.Color(params.get("sunColor") || ("#ffffff"));
 let shadeColor = new THREE.Color(params.get("shadeColor") || ("hsl(" + randomHue + ", 30%, 50%)"));
 let floorColor = new THREE.Color(params.get("floorColor") || "#DDDDDD");
-let backgroundColor = new THREE.Color(params.get("backgroundColor") || "#ffffff");
+let backgroundColor = new THREE.Color(params.get("backgroundColor") || '#' + shadeColor.getHexString());
 let objectColor = new THREE.Color(params.get("objectColor") || "#ffffff");
 
 const objectMaterial = new THREE.MeshLambertMaterial({
@@ -106,7 +106,7 @@ function draw() {
 
 
 scene.background = new THREE.Color(backgroundColor);
-scene.fog = new THREE.Fog(backgroundColor, cameraDistance, cameraDistance * 2);
+scene.fog = new THREE.Fog(backgroundColor, cameraDistance * 1.5, cameraDistance * 2);
 
 const sunShadowWidth = 2.25;
 const sunLight = new THREE.DirectionalLight(sunColor, 1);
