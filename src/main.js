@@ -15,6 +15,11 @@ let sunColor = new THREE.Color(params.get("sunColor") || ("#ffffff"));
 let shadeColor = new THREE.Color(params.get("shadeColor") || ("hsl(" + randomHue + ", 30%, 50%)"));
 let floorColor = new THREE.Color(params.get("floorColor") || "#DDDDDD");
 let backgroundColor = new THREE.Color(params.get("backgroundColor") || "#ffffff");
+let objectColor = new THREE.Color(params.get("objectColor") || "#ffffff");
+
+const objectMaterial = new THREE.MeshLambertMaterial({
+	color: objectColor,
+});
 
 window.addEventListener("DOMContentLoaded", () => {
 	const sunInput = document.getElementById("sunColor");
@@ -22,6 +27,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	sunInput.value = '#' + sunColor.getHexString();
 	shadeInput.value = '#' + shadeColor.getHexString();
+
+	sunColor.sub(shadeColor);
+	sunLight.color = sunColor;
 
 	sunInput.addEventListener("change", () => {
 		sunColor.set(sunInput.value);
@@ -88,8 +96,8 @@ function draw() {
 	const delta = Math.min(1, Math.max(0, (performance.now() - lastFrame) / 1000));
 	lastFrame = performance.now();
 
-	camera.position.set(Math.sin(performance.now() / 1000) * 1, 1, Math.cos(performance.now() / 1000) * 1).normalize().multiplyScalar(cameraDistance);
-	camera.lookAt(0, 0.5, 0);
+	camera.position.set(Math.sin(performance.now() / 3000) * 1, 1, Math.cos(performance.now() / 3000) * 1).normalize().multiplyScalar(cameraDistance);
+	camera.lookAt(0, 0.25, 0);
 
 	renderer.render(scene, camera);
 	if (stats) stats.end();
@@ -100,8 +108,8 @@ function draw() {
 scene.background = new THREE.Color(backgroundColor);
 scene.fog = new THREE.Fog(backgroundColor, cameraDistance, cameraDistance * 2);
 
-const sunShadowWidth = 10;
-const sunLight = new THREE.DirectionalLight(sunColor.clone().sub(shadeColor.clone()), 1);
+const sunShadowWidth = 2.25;
+const sunLight = new THREE.DirectionalLight(sunColor, 1);
 sunLight.position.set(-1, 1.1, 0.5).normalize().multiplyScalar(10);
 sunLight.castShadow = true;
 sunLight.shadow.mapSize.width = 2048;
@@ -127,8 +135,45 @@ scene.add(floor);
 
 const cube = new THREE.Mesh(
 	new THREE.BoxBufferGeometry(1, 1, 1),
-	new THREE.MeshLambertMaterial({ color: 0xffffff })
+	objectMaterial
 );
 cube.castShadow = true;
+cube.receiveShadow = true;
 cube.position.set(0, 0.5, 0);
 scene.add(cube);
+
+const sphere = new THREE.Mesh(
+	new THREE.SphereBufferGeometry(0.5, 32, 32),
+	objectMaterial
+);
+sphere.castShadow = true;
+sphere.receiveShadow = true;
+sphere.position.set(1.5, 0.5, 0);
+scene.add(sphere);
+
+const cylinder = new THREE.Mesh(
+	new THREE.CylinderBufferGeometry(0.5, 0.5, 1, 32),
+	objectMaterial
+);
+cylinder.castShadow = true;
+cylinder.receiveShadow = true;
+cylinder.position.set(-1.5, 0.5, 0);
+scene.add(cylinder);
+
+const octahedron = new THREE.Mesh(
+	new THREE.OctahedronBufferGeometry(0.5, 0),
+	objectMaterial
+);
+octahedron.castShadow = true;
+octahedron.receiveShadow = true;
+octahedron.position.set(0, 0.5, 1.5);
+scene.add(octahedron);
+
+const knot = new THREE.Mesh(
+	new THREE.TorusKnotBufferGeometry(0.5, 0.1, 100, 16),
+	objectMaterial
+);
+knot.castShadow = true;
+knot.receiveShadow = true;
+knot.position.set(0, 0.75, -1.5);
+scene.add(knot);
