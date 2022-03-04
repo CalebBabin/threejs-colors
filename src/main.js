@@ -119,7 +119,7 @@ scene.add(ambientLight);
 
 const floor = new THREE.Mesh(
 	new THREE.PlaneBufferGeometry(cameraDistance * 10, cameraDistance * 10, 1, 1),
-	new THREE.MeshPhongMaterial({ color: floorColor })
+	new THREE.MeshLambertMaterial({ color: floorColor })
 );
 floor.rotation.x = -Math.PI / 2;
 floor.receiveShadow = true;
@@ -127,7 +127,7 @@ scene.add(floor);
 
 const cube = new THREE.Mesh(
 	new THREE.BoxBufferGeometry(1, 1, 1),
-	new THREE.MeshPhongMaterial({ color: 0xffffff })
+	new THREE.MeshLambertMaterial({ color: 0xffffff })
 );
 cube.castShadow = true;
 cube.position.set(0, 0.5, 0);
