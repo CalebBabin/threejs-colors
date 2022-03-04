@@ -96,7 +96,7 @@ function draw() {
 	const delta = Math.min(1, Math.max(0, (performance.now() - lastFrame) / 1000));
 	lastFrame = performance.now();
 
-	camera.position.set(Math.sin(performance.now() / 3000) * 1, 1, Math.cos(performance.now() / 3000) * 1).normalize().multiplyScalar(cameraDistance);
+	camera.position.set(Math.sin(Date.now() / 3000) * 1, 1, Math.cos(Date.now() / 3000) * 1).normalize().multiplyScalar(cameraDistance);
 	camera.lookAt(0, 0.25, 0);
 
 	renderer.render(scene, camera);
