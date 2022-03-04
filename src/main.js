@@ -67,7 +67,7 @@ const camera = new THREE.PerspectiveCamera(
 );
 
 const scene = new THREE.Scene();
-const renderer = new THREE.WebGLRenderer({ antialias: false });
+const renderer = new THREE.WebGLRenderer({ antialias: true });
 
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
