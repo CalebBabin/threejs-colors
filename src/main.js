@@ -20,8 +20,8 @@ window.addEventListener("DOMContentLoaded", () => {
 	const sunInput = document.getElementById("sunColor");
 	const shadeInput = document.getElementById("shadeColor");
 
-	sunInput.setAttribute('value', '#' + sunColor.getHexString());
-	shadeInput.setAttribute('value', '#' + shadeColor.getHexString());
+	sunInput.value = '#' + sunColor.getHexString();
+	shadeInput.value = '#' + shadeColor.getHexString();
 
 	sunInput.addEventListener("change", () => {
 		sunColor.set(sunInput.value);
@@ -33,6 +33,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 		sunColor.set(sunInput.value);
 		sunColor.sub(shadeColor);
+		sunLight.color = sunColor;
 		ambientLight.color = shadeColor;
 	});
 });
