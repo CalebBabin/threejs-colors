@@ -30,6 +30,8 @@ window.addEventListener("DOMContentLoaded", () => {
 	});
 	shadeInput.addEventListener("change", () => {
 		shadeColor.set(shadeInput.value);
+
+		sunColor.set(sunInput.value);
 		sunColor.sub(shadeColor);
 		ambientLight.color = shadeColor;
 	});
