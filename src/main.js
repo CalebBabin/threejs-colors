@@ -89,7 +89,7 @@ window.addEventListener('DOMContentLoaded', () => {
 /*
 ** Draw loop
 */
-let lastFrame = performance.now();
+let lastFrame = 0;
 function draw() {
 	if (stats) stats.begin();
 	requestAnimationFrame(draw);
