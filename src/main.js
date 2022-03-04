@@ -17,6 +17,25 @@ let shadeColor = new THREE.Color(params.get("shadeColor") || ("hsl(" + randomHue
 let floorColor = new THREE.Color(params.get("floorColor") || "#DDDDDD");
 let backgroundColor = new THREE.Color(params.get("backgroundColor") || "#ffffff");
 
+window.addEventListener("DOMContentLoaded", () => {
+	const sunInput = document.getElementById("sunColor");
+	const shadeInput = document.getElementById("shadeColor");
+
+	sunInput.setAttribute('value', '#' + sunColor.getHexString());
+	shadeInput.setAttribute('value', '#' + shadeColor.getHexString());
+
+	sunInput.addEventListener("change", () => {
+		sunColor.set(sunInput.value);
+		sunColor.sub(shadeColor);
+		sunLight.color = sunColor;
+	});
+	shadeInput.addEventListener("change", () => {
+		shadeColor.set(shadeInput.value);
+		sunColor.sub(shadeColor);
+		ambientLight.color = shadeColor;
+	});
+});
+
 let stats = false;
 if (params.get("stats") === "true") {
 	stats = new Stats();
@@ -98,7 +117,7 @@ scene.add(ambientLight);
 
 const floor = new THREE.Mesh(
 	new THREE.PlaneBufferGeometry(cameraDistance * 10, cameraDistance * 10, 1, 1),
-	new THREE.MeshLambertMaterial({ color: floorColor })
+	new THREE.MeshPhongMaterial({ color: floorColor })
 );
 floor.rotation.x = -Math.PI / 2;
 floor.receiveShadow = true;
@@ -106,7 +125,7 @@ scene.add(floor);
 
 const cube = new THREE.Mesh(
 	new THREE.BoxBufferGeometry(1, 1, 1),
-	new THREE.MeshLambertMaterial({ color: 0xffffff })
+	new THREE.MeshPhongMaterial({ color: 0xffffff })
 );
 cube.castShadow = true;
 cube.position.set(0, 0.5, 0);
