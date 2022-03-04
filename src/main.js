@@ -1,6 +1,5 @@
 import * as THREE from "three";
 import Stats from "stats-js";
-import "./main.css";
 
 /*
 ** connect to twitch chat
