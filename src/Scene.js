@@ -15,7 +15,7 @@ function CameraHandler() {
 			cameraDistance * 0.9,
 			Math.cos(Date.now() / rotationDuration) * cameraDistance,
 		);
-		camera.lookAt(0, 0, 0);
+		camera.lookAt(0, 0.25, 0);
 	});
 	return <></>
 }
@@ -29,7 +29,7 @@ function Scene(props) {
 
 	return (
 		<Canvas
-			camera={{ fov: 50 }}
+			camera={{ fov: 40 }}
 			background={props.backgroundColor}
 			shadows
 			style={{
@@ -44,10 +44,10 @@ function Scene(props) {
 				shadow-mapSize-height={2048}
 				shadow-camera-near={0.1}
 				shadow-camera-far={100}
-				shadow-camera-left={-5}
-				shadow-camera-right={5}
-				shadow-camera-top={5}
-				shadow-camera-bottom={-5}
+				shadow-camera-left={-2.5}
+				shadow-camera-right={2.5}
+				shadow-camera-top={2.5}
+				shadow-camera-bottom={-2.5}
 			/>
 			<ambientLight color={props.shadeColor} />
 			<fog attach="fog" args={[props.backgroundColor, cameraDistance, 20]} />
@@ -63,7 +63,7 @@ function Scene(props) {
 				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
 			</mesh>
 			<mesh position={[1.5, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
-				<sphereBufferGeometry attach="geometry" args={[0.5, 32, 32]} />
+				<sphereBufferGeometry attach="geometry" args={[0.5, 64, 64]} />
 			</mesh>
 			<mesh position={[-1.5, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
 				<cylinderBufferGeometry attach="geometry" args={[0.5, 0.5, 1, 32]} />
@@ -72,7 +72,7 @@ function Scene(props) {
 				<octahedronBufferGeometry attach="geometry" args={[0.5, 0]} />
 			</mesh>
 			<mesh position={[0, 0.8, -1.5]} castShadow receiveShadow material={ObjectMaterial}>
-				<torusKnotBufferGeometry attach="geometry" args={[0.5, 0.1, 100, 16]} />
+				<torusKnotBufferGeometry attach="geometry" args={[0.5, 0.1, 200, 32]} />
 			</mesh>
 		</Canvas>
 	);
