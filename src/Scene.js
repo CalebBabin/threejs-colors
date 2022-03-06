@@ -21,7 +21,11 @@ function CameraHandler() {
 }
 
 function Scene(props) {
-	const sunColor = new THREE.Color(props.sunColor).sub(new THREE.Color(props.shadeColor));
+	const sunColor = new THREE.Color(props.sunColor);
+
+	if (props.useSubtractiveLighting) {
+		sunColor.sub(new THREE.Color(props.shadeColor));
+	}
 
 	const ObjectMaterial = new THREE.MeshLambertMaterial({
 		color: props.objectColor,
