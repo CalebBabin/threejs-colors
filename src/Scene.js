@@ -1,6 +1,5 @@
-import React, { useRef, useState } from 'react'
-import ReactDOM from 'react-dom'
-import { Canvas, useFrame, useThree } from '@react-three/fiber'
+import React from 'react'
+import { Canvas, useFrame } from '@react-three/fiber'
 import * as THREE from 'three';
 
 const cameraDistance = 4;
