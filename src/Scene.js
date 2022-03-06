@@ -66,7 +66,7 @@ function Scene(props) {
 				<sphereBufferGeometry attach="geometry" args={[0.5, 64, 64]} />
 			</mesh>
 			<mesh position={[-1.5, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
-				<cylinderBufferGeometry attach="geometry" args={[0.5, 0.5, 1, 32]} />
+				<cylinderBufferGeometry attach="geometry" args={[0.5, 0.5, 1, 64]} />
 			</mesh>
 			<mesh position={[0, 0.5, 1.5]} castShadow receiveShadow material={ObjectMaterial}>
 				<octahedronBufferGeometry attach="geometry" args={[0.5, 0]} />
