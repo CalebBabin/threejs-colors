@@ -7,11 +7,11 @@ function randomColor() {
 }
 
 function App() {
-	const [sunColor, setSunColor] = useState('#ffffff');
+	const [sunColor, setSunColor] = useState('#FFFFFF');
 	const [shadeColor, setShadeColor] = useState(randomColor());
 	const [floorColor, setFloorColor] = useState("#DDDDDD");
-	const [backgroundColor, setBackgroundColor] = useState(shadeColor);
-	const [objectColor, setObjectColor] = useState("#ffffff");
+	const [backgroundColor, setBackgroundColor] = useState(randomColor());
+	const [objectColor, setObjectColor] = useState("#FFFFFF");
 
 
 	return (

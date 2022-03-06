@@ -38,7 +38,7 @@ function Scene(props) {
 		>
 			<directionalLight
 				color={sunColor}
-				position={[15, 13, 10]}
+				position={[16, 13, 10]}
 				castShadow
 				shadow-mapSize-width={2048}
 				shadow-mapSize-height={2048}
