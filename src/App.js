@@ -33,6 +33,10 @@ function App() {
 				<div>
 					<input type="color" value={objectColor} onChange={(e) => setObjectColor(e.target.value)} /> Object
 				</div>
+				<button className='border rounded px-1 my-1 hover:bg-black active:bg-white active:text-black' onClick={() => {
+					setShadeColor(randomColor());
+					setBackgroundColor(randomColor());
+				}}>Randomize</button>
 			</div>
 		</div>
 	);
