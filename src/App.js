@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Scene from './Scene';
 import * as THREE from 'three';
 
@@ -15,6 +15,28 @@ function App() {
 
 	const [useSubtractiveLighting, setUseSubtractiveLighting] = useState(true);
 
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		if (params.has('sun')) {
+			setSunColor('#' + params.get('sun'));
+		}
+		if (params.has('shade')) {
+			setShadeColor('#' + params.get('shade'));
+		}
+		if (params.has('floor')) {
+			setFloorColor('#' + params.get('floor'));
+		}
+		if (params.has('background')) {
+			setBackgroundColor('#' + params.get('background'));
+		}
+		if (params.has('object')) {
+			setObjectColor('#' + params.get('object'));
+		}
+		if (params.has('subLighting')) {
+			setUseSubtractiveLighting(params.get('subLighting') === 'true');
+		}
+	}, []);
+
 	return (
 		<div className='w-full h-full'>
 			<Scene useSubtractiveLighting={useSubtractiveLighting} sunColor={sunColor} shadeColor={shadeColor} floorColor={floorColor} backgroundColor={backgroundColor} objectColor={objectColor} />
@@ -23,7 +45,7 @@ function App() {
 					<input type="color" value={sunColor} onChange={(e) => setSunColor(e.target.value)} /> Sun
 				</div>
 				<div>
-					<input type="checkbox" checked={useSubtractiveLighting} onChange={(e) => setUseSubtractiveLighting(e.target.checked)} id="subLight" /> <label for="subLight">Subtract shade from sun</label>
+					<input type="checkbox" checked={useSubtractiveLighting} onChange={(e) => setUseSubtractiveLighting(e.target.checked)} id="subLight" /> <label htmlFor="subLight">Subtract shade from sun</label>
 					<div className='text-right'>
 						<small>(helps prevent peaking)</small>
 					</div>
