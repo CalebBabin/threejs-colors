@@ -12,7 +12,7 @@ function CameraHandler() {
 	useFrame(({ camera }) => {
 		camera.position.set(
 			Math.sin(Date.now() / rotationDuration) * cameraDistance,
-			cameraDistance * 0.9,
+			cameraDistance * 0.5,
 			Math.cos(Date.now() / rotationDuration) * cameraDistance,
 		);
 		camera.lookAt(0, 0.25, 0);
@@ -32,9 +32,6 @@ function Scene(props) {
 			camera={{ fov: 40 }}
 			background={props.backgroundColor}
 			shadows
-			style={{
-				background: props.backgroundColor,
-			}}
 		>
 			<directionalLight
 				color={sunColor}
@@ -50,7 +47,7 @@ function Scene(props) {
 				shadow-camera-bottom={-2.5}
 			/>
 			<ambientLight color={props.shadeColor} />
-			<fog attach="fog" args={[props.backgroundColor, cameraDistance, 20]} />
+			<fog attach="fog" args={[props.backgroundColor, cameraDistance, 10]} />
 			<CameraHandler />
 
 
