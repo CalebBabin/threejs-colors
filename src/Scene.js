@@ -63,16 +63,16 @@ function Scene(props) {
 				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
 			</mesh>
 			<mesh position={[1.5, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
-				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+				<sphereBufferGeometry attach="geometry" args={[0.5, 32, 32]} />
 			</mesh>
 			<mesh position={[-1.5, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
-				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+				<cylinderBufferGeometry attach="geometry" args={[0.5, 0.5, 1, 32]} />
 			</mesh>
 			<mesh position={[0, 0.5, 1.5]} castShadow receiveShadow material={ObjectMaterial}>
-				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+				<octahedronBufferGeometry attach="geometry" args={[0.5, 0]} />
 			</mesh>
-			<mesh position={[0, 0.5, -1.5]} castShadow receiveShadow material={ObjectMaterial}>
-				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+			<mesh position={[0, 0.8, -1.5]} castShadow receiveShadow material={ObjectMaterial}>
+				<torusKnotBufferGeometry attach="geometry" args={[0.5, 0.1, 100, 16]} />
 			</mesh>
 		</Canvas>
 	);
