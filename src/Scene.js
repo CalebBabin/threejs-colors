@@ -15,7 +15,7 @@ function CameraHandler() {
 			cameraDistance * 0.9,
 			Math.cos(Date.now() / rotationDuration) * cameraDistance,
 		);
-		camera.lookAt(0, 0.5, 0);
+		camera.lookAt(0, 0, 0);
 	});
 	return <></>
 }
@@ -23,28 +23,31 @@ function CameraHandler() {
 function Scene(props) {
 	const sunColor = new THREE.Color(props.sunColor).sub(new THREE.Color(props.shadeColor));
 
+	const ObjectMaterial = new THREE.MeshLambertMaterial({
+		color: props.objectColor,
+	});
+
 	return (
 		<Canvas
-			shadowMap={THREE.PCFShadowMap}
 			camera={{ fov: 50 }}
 			background={props.backgroundColor}
-
+			shadows
 			style={{
 				background: props.backgroundColor,
 			}}
 		>
 			<directionalLight
 				color={sunColor}
-				position={[20, 20, 10]}
+				position={[15, 13, 10]}
 				castShadow
-				shadow-mapSize-width={4096}
-				shadow-mapSize-height={4096}
+				shadow-mapSize-width={2048}
+				shadow-mapSize-height={2048}
 				shadow-camera-near={0.1}
 				shadow-camera-far={100}
-				shadow-camera-left={-10}
-				shadow-camera-right={10}
-				shadow-camera-top={10}
-				shadow-camera-bottom={-10}
+				shadow-camera-left={-5}
+				shadow-camera-right={5}
+				shadow-camera-top={5}
+				shadow-camera-bottom={-5}
 			/>
 			<ambientLight color={props.shadeColor} />
 			<fog attach="fog" args={[props.backgroundColor, cameraDistance, 20]} />
@@ -53,28 +56,23 @@ function Scene(props) {
 
 			<mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
 				<planeBufferGeometry attach="geometry" args={[1000, 1000]} />
-				<meshStandardMaterial attach="material" color={props.floorColor} />
+				<meshLambertMaterial attach="material" color={props.floorColor} />
 			</mesh>
 
-			<mesh position={[0, 0.5, 0]} castShadow receiveShadow>
+			<mesh position={[0, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
 				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-				<meshStandardMaterial attach="material" color={props.objectColor} />
 			</mesh>
-			<mesh position={[1.5, 0.5, 0]} castShadow receiveShadow>
+			<mesh position={[1.5, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
 				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-				<meshStandardMaterial attach="material" color={props.objectColor} />
 			</mesh>
-			<mesh position={[-1.5, 0.5, 0]} castShadow receiveShadow>
+			<mesh position={[-1.5, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
 				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-				<meshStandardMaterial attach="material" color={props.objectColor} />
 			</mesh>
-			<mesh position={[0, 0.5, 1.5]} castShadow receiveShadow>
+			<mesh position={[0, 0.5, 1.5]} castShadow receiveShadow material={ObjectMaterial}>
 				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-				<meshStandardMaterial attach="material" color={props.objectColor} />
 			</mesh>
-			<mesh position={[0, 0.5, -1.5]} castShadow receiveShadow>
+			<mesh position={[0, 0.5, -1.5]} castShadow receiveShadow material={ObjectMaterial}>
 				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
-				<meshStandardMaterial attach="material" color={props.objectColor} />
 			</mesh>
 		</Canvas>
 	);
