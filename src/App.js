@@ -13,7 +13,7 @@ function App() {
 	const [backgroundColor, setBackgroundColor] = useState(randomColor(0.5, 0.9));
 	const [objectColor, setObjectColor] = useState("#FFFFFF");
 
-	const [useSubtractiveLighting, setUseSubtractiveLighting] = useState(true);
+	const [useSubtractiveLighting, setUseSubtractiveLighting] = useState(false);
 
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search);
