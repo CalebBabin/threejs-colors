@@ -39,6 +39,7 @@ function Scene(props) {
 		>
 			<directionalLight
 				color={sunColor}
+				intensity={1}
 				position={[16, 13, 10]}
 				castShadow
 				shadow-mapSize-width={2048}
@@ -50,7 +51,10 @@ function Scene(props) {
 				shadow-camera-top={2.5}
 				shadow-camera-bottom={-2.5}
 			/>
-			<ambientLight color={props.shadeColor} />
+			<ambientLight
+				intensity={1}
+				color={props.shadeColor}
+			/>
 			<fog attach="fog" args={[props.backgroundColor, cameraDistance, 10]} />
 			<CameraHandler />
 
