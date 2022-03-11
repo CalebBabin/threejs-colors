@@ -7,38 +7,40 @@ function randomColor(saturation = 0.3, lightness = 0.5, hueStart = 0, hueEnd = 3
 	return "#" + (new THREE.Color(`hsl(${Math.random() * hueEnd + hueStart}, ${Math.min(1, saturation) * 100}%, ${Math.min(1, lightness) * 100}%)`).getHexString());
 }
 
+const params = new URLSearchParams(window.location.search);
+const defaultColors = {
+	sun: '#FFFFFF',
+	shade: randomColor(),
+	floor: "#DDDDDD",
+	background: randomColor(0.5, 0.9),
+	object: "#FFFFFF",
+	subtractive: false,
+};
+for (const key in defaultColors) {
+	if (Object.hasOwnProperty.call(defaultColors, key) && params.has(key)) {
+		if (params.get(key).length === 6) {
+			defaultColors[key] = '#' + params.get(key);
+		} else if (params.get(key).length === 1) {
+			defaultColors[key] = params.get(key) === '1' ? true : false;
+		}
+	}
+}
+
 function App() {
-	const [colors, setColors] = useState({
-		sun: '#FFFFFF',
-		shade: randomColor(),
-		floor: "#DDDDDD",
-		background: randomColor(0.5, 0.9),
-		object: "#FFFFFF",
-	})
+	const [colors, setColors] = useState({ ...defaultColors })
 
 	const [useSubtractiveLighting, setUseSubtractiveLighting] = useState(false);
 
-	useEffect(() => {
-		const params = new URLSearchParams(window.location.search);
-		const updateObj = {};
-		for (const key in colors) {
-			if (Object.hasOwnProperty.call(colors, key)) {
-				if (params.has(key)) {
-					updateObj[key] = '#' + params.get(key);
-				}
-			}
-		}
-		if (params.has('subLighting')) {
-			setUseSubtractiveLighting(params.get('subLighting') === 'true');
-		}
-		setColors(prev => ({ ...prev, ...updateObj }));
-	}, []);
 
 	const updateURL = () => {
 		const params = new URLSearchParams(window.location.search);
 		for (const key in colors) {
 			if (Object.hasOwnProperty.call(colors, key)) {
-				params.set(key, new THREE.Color(colors[key]).getHexString());
+				if (typeof colors[key] === 'string') {
+					params.set(key, new THREE.Color(colors[key]).getHexString());
+				} else if (typeof colors[key] === 'boolean') {
+					params.set(key, colors[key] ? '1' : '0');
+				}
 			}
 		}
 		window.history.pushState(null, null, `?${params.toString()}`);
@@ -54,7 +56,7 @@ function App() {
 					<Color value={colors.sun} onChange={(e) => setColors({ ...colors, sun: e.target.value })} /> Sun
 				</div>
 				<div>
-					<input type="checkbox" checked={useSubtractiveLighting} onChange={(e) => setUseSubtractiveLighting(e.target.checked)} id="subLight" /> <label htmlFor="subLight">Subtract shade from sun</label>
+					<input type="checkbox" checked={colors.subtractive} onChange={(e) => setColors({ ...colors, subtractive: e.target.checked })} id="subLight" /> <label htmlFor="subLight">Subtract shade from sun</label>
 					<div className='text-right'>
 						<small>(helps prevent peaking)</small>
 					</div>

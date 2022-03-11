@@ -23,7 +23,7 @@ function CameraHandler() {
 function Scene(props) {
 	const sunColor = new THREE.Color(props.colors.sun);
 
-	if (props.useSubtractiveLighting) {
+	if (props.colors.subtractive) {
 		sunColor.sub(new THREE.Color(props.colors.shade));
 	}
 
