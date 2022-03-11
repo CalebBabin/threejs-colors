@@ -24,14 +24,27 @@ function App() {
 		for (const key in colors) {
 			if (Object.hasOwnProperty.call(colors, key)) {
 				if (params.has(key)) {
-					updateObj[key] = params.get(key);
+					updateObj[key] = '#' + params.get(key);
 				}
 			}
 		}
 		if (params.has('subLighting')) {
 			setUseSubtractiveLighting(params.get('subLighting') === 'true');
 		}
+		setColors(prev => ({ ...prev, ...updateObj }));
 	}, []);
+
+	const updateURL = () => {
+		const params = new URLSearchParams(window.location.search);
+		for (const key in colors) {
+			if (Object.hasOwnProperty.call(colors, key)) {
+				params.set(key, new THREE.Color(colors[key]).getHexString());
+			}
+		}
+		window.history.pushState(null, null, `?${params.toString()}`);
+	}
+
+	useEffect(updateURL, [colors]);
 
 	return (
 		<div className='w-full h-full'>
@@ -58,9 +71,15 @@ function App() {
 				<div>
 					<Color value={colors.object} onChange={(e) => setColors({ ...colors, object: e.target.value })} /> Object
 				</div>
-				<button className='border rounded px-1 my-1 hover:bg-black active:bg-white active:text-black' onClick={() => {
+				<button className='border rounded px-1 m-1 hover:bg-black active:bg-white active:text-black' onClick={() => {
 					setColors({ ...colors, shade: randomColor(), background: randomColor(0.5, 0.9) });
 				}}>Randomize</button>
+
+				<button className='border rounded px-1 m-1 hover:bg-black active:bg-white active:text-black' onClick={(e) => {
+					updateURL();
+					navigator.clipboard.writeText(window.location.toString());
+					e.preventDefault();
+				}}>Copy Link</button>
 			</div>
 		</div>
 	);
