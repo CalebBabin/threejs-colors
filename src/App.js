@@ -29,7 +29,6 @@ for (const key in defaultColors) {
 function App() {
 	const [colors, setColors] = useState({ ...defaultColors })
 
-	const [useSubtractiveLighting, setUseSubtractiveLighting] = useState(false);
 
 
 	const updateURL = () => {
@@ -50,7 +49,7 @@ function App() {
 
 	return (
 		<div className='w-full h-full'>
-			<Scene useSubtractiveLighting={useSubtractiveLighting} colors={colors} />
+			<Scene colors={colors} />
 			<div className='absolute top-0 left-0 p-4 rounded-br-xl bg-black bg-opacity-50 text-white'>
 				<div>
 					<Color value={colors.sun} onChange={(e) => setColors({ ...colors, sun: e.target.value })} /> Sun
