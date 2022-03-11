@@ -73,7 +73,7 @@ function App() {
 					<Color value={colors.object} onChange={(e) => setColors({ ...colors, object: e.target.value })} /> Object
 				</div>
 				<button className='border rounded px-1 m-1 hover:bg-black active:bg-white active:text-black' onClick={() => {
-					setColors({ ...colors, shade: randomColor(), background: randomColor(0.5, 0.9) });
+					setColors({ ...colors, sun: '#FFFFFF', floor: '#DDDDDD', object: '#FFFFFF', shade: randomColor(), background: randomColor(0.5, 0.9) });
 				}}>Randomize</button>
 
 				<button className='border rounded px-1 m-1 hover:bg-black active:bg-white active:text-black' onClick={(e) => {
