@@ -7,30 +7,25 @@ function randomColor(saturation = 0.3, lightness = 0.5, hueStart = 0, hueEnd = 3
 }
 
 function App() {
-	const [sunColor, setSunColor] = useState('#FFFFFF');
-	const [shadeColor, setShadeColor] = useState(randomColor());
-	const [floorColor, setFloorColor] = useState("#DDDDDD");
-	const [backgroundColor, setBackgroundColor] = useState(randomColor(0.5, 0.9));
-	const [objectColor, setObjectColor] = useState("#FFFFFF");
+	const [colors, setColors] = useState({
+		sun: '#FFFFFF',
+		shade: randomColor(),
+		floor: "#DDDDDD",
+		background: randomColor(0.5, 0.9),
+		object: "#FFFFFF",
+	})
 
 	const [useSubtractiveLighting, setUseSubtractiveLighting] = useState(false);
 
 	useEffect(() => {
 		const params = new URLSearchParams(window.location.search);
-		if (params.has('sun')) {
-			setSunColor('#' + params.get('sun'));
-		}
-		if (params.has('shade')) {
-			setShadeColor('#' + params.get('shade'));
-		}
-		if (params.has('floor')) {
-			setFloorColor('#' + params.get('floor'));
-		}
-		if (params.has('background')) {
-			setBackgroundColor('#' + params.get('background'));
-		}
-		if (params.has('object')) {
-			setObjectColor('#' + params.get('object'));
+		const updateObj = {};
+		for (const key in colors) {
+			if (Object.hasOwnProperty.call(colors, key)) {
+				if (params.has(key)) {
+					updateObj[key] = params.get(key);
+				}
+			}
 		}
 		if (params.has('subLighting')) {
 			setUseSubtractiveLighting(params.get('subLighting') === 'true');
@@ -39,10 +34,10 @@ function App() {
 
 	return (
 		<div className='w-full h-full'>
-			<Scene useSubtractiveLighting={useSubtractiveLighting} sunColor={sunColor} shadeColor={shadeColor} floorColor={floorColor} backgroundColor={backgroundColor} objectColor={objectColor} />
+			<Scene useSubtractiveLighting={useSubtractiveLighting} colors={colors} />
 			<div className='absolute top-0 left-0 p-4 rounded-br-xl bg-black bg-opacity-50 text-white'>
 				<div>
-					<input type="color" value={sunColor} onChange={(e) => setSunColor(e.target.value)} /> Sun
+					<input type="color" value={colors.sun} onChange={(e) => setColors({ ...colors, sun: e.target.value })} /> Sun
 				</div>
 				<div>
 					<input type="checkbox" checked={useSubtractiveLighting} onChange={(e) => setUseSubtractiveLighting(e.target.checked)} id="subLight" /> <label htmlFor="subLight">Subtract shade from sun</label>
@@ -51,20 +46,19 @@ function App() {
 					</div>
 				</div>
 				<div>
-					<input type="color" value={shadeColor} onChange={(e) => setShadeColor(e.target.value)} /> Shade
+					<input type="color" value={colors.shade} onChange={(e) => setColors({ ...colors, shade: e.target.value })} /> Shade
 				</div>
 				<div>
-					<input type="color" value={floorColor} onChange={(e) => setFloorColor(e.target.value)} /> Floor
+					<input type="color" value={colors.floor} onChange={(e) => setColors({ ...colors, floor: e.target.value })} /> Floor
 				</div>
 				<div>
-					<input type="color" value={backgroundColor} onChange={(e) => setBackgroundColor(e.target.value)} /> Background
+					<input type="color" value={colors.background} onChange={(e) => setColors({ ...colors, background: e.target.value })} /> Background
 				</div>
 				<div>
-					<input type="color" value={objectColor} onChange={(e) => setObjectColor(e.target.value)} /> Object
+					<input type="color" value={colors.object} onChange={(e) => setColors({ ...colors, object: e.target.value })} /> Object
 				</div>
 				<button className='border rounded px-1 my-1 hover:bg-black active:bg-white active:text-black' onClick={() => {
-					setShadeColor(randomColor());
-					setBackgroundColor(randomColor(0.5, 0.9));
+					setColors({ ...colors, shade: randomColor(), background: randomColor(0.5, 0.9) });
 				}}>Randomize</button>
 			</div>
 		</div>

@@ -21,20 +21,20 @@ function CameraHandler() {
 }
 
 function Scene(props) {
-	const sunColor = new THREE.Color(props.sunColor);
+	const sunColor = new THREE.Color(props.colors.sun);
 
 	if (props.useSubtractiveLighting) {
-		sunColor.sub(new THREE.Color(props.shadeColor));
+		sunColor.sub(new THREE.Color(props.colors.shade));
 	}
 
 	const ObjectMaterial = new THREE.MeshLambertMaterial({
-		color: props.objectColor,
+		color: props.colors.object,
 	});
 
 	return (
 		<Canvas
 			camera={{ fov: 40 }}
-			background={props.backgroundColor}
+			background={props.colors.background}
 			shadows
 		>
 			<directionalLight
@@ -53,15 +53,15 @@ function Scene(props) {
 			/>
 			<ambientLight
 				intensity={1}
-				color={props.shadeColor}
+				color={props.colors.shade}
 			/>
-			<fog attach="fog" args={[props.backgroundColor, cameraDistance, 10]} />
+			<fog attach="fog" args={[props.colors.background, cameraDistance, 10]} />
 			<CameraHandler />
 
 
 			<mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
 				<planeBufferGeometry attach="geometry" args={[1000, 1000]} />
-				<meshLambertMaterial attach="material" color={props.floorColor} />
+				<meshLambertMaterial attach="material" color={props.colors.floor} />
 			</mesh>
 
 			<mesh position={[0, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
