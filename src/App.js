@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Scene from './Scene';
 import * as THREE from 'three';
+import Color from './ColorInput';
 
 function randomColor(saturation = 0.3, lightness = 0.5, hueStart = 0, hueEnd = 360) {
 	return "#" + (new THREE.Color(`hsl(${Math.random() * hueEnd + hueStart}, ${Math.min(1, saturation) * 100}%, ${Math.min(1, lightness) * 100}%)`).getHexString());
@@ -37,7 +38,7 @@ function App() {
 			<Scene useSubtractiveLighting={useSubtractiveLighting} colors={colors} />
 			<div className='absolute top-0 left-0 p-4 rounded-br-xl bg-black bg-opacity-50 text-white'>
 				<div>
-					<input type="color" value={colors.sun} onChange={(e) => setColors({ ...colors, sun: e.target.value })} /> Sun
+					<Color value={colors.sun} onChange={(e) => setColors({ ...colors, sun: e.target.value })} /> Sun
 				</div>
 				<div>
 					<input type="checkbox" checked={useSubtractiveLighting} onChange={(e) => setUseSubtractiveLighting(e.target.checked)} id="subLight" /> <label htmlFor="subLight">Subtract shade from sun</label>
@@ -46,16 +47,16 @@ function App() {
 					</div>
 				</div>
 				<div>
-					<input type="color" value={colors.shade} onChange={(e) => setColors({ ...colors, shade: e.target.value })} /> Shade
+					<Color value={colors.shade} onChange={(e) => setColors({ ...colors, shade: e.target.value })} /> Shade
 				</div>
 				<div>
-					<input type="color" value={colors.floor} onChange={(e) => setColors({ ...colors, floor: e.target.value })} /> Floor
+					<Color value={colors.floor} onChange={(e) => setColors({ ...colors, floor: e.target.value })} /> Floor
 				</div>
 				<div>
-					<input type="color" value={colors.background} onChange={(e) => setColors({ ...colors, background: e.target.value })} /> Background
+					<Color value={colors.background} onChange={(e) => setColors({ ...colors, background: e.target.value })} /> Background
 				</div>
 				<div>
-					<input type="color" value={colors.object} onChange={(e) => setColors({ ...colors, object: e.target.value })} /> Object
+					<Color value={colors.object} onChange={(e) => setColors({ ...colors, object: e.target.value })} /> Object
 				</div>
 				<button className='border rounded px-1 my-1 hover:bg-black active:bg-white active:text-black' onClick={() => {
 					setColors({ ...colors, shade: randomColor(), background: randomColor(0.5, 0.9) });
