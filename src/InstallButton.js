@@ -19,7 +19,7 @@ function InstallButton() {
 	}, []);
 
 	return (
-		<div className={'absolute top-0 right-0 ' + hidden ? 'hidden' : 'block'}>
+		<div className={'absolute top-0 right-0 ' + (hidden ? 'hidden' : 'block')}>
 			<Button onClick={() => {
 
 				// hide our user interface that shows our A2HS button
