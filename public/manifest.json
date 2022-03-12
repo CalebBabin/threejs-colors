@@ -1,6 +1,6 @@
 {
-	"short_name": "Color Picker - ThreeJS",
-	"name": "A ThreeJS color picker",
+	"short_name": "Color Picker",
+	"name": "ThreeJS color picker",
 	"icons": [
 		{
 			"src": "favicon.ico",
