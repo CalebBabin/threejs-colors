@@ -78,7 +78,7 @@ function Scene(props) {
 			</mesh>
 			<mesh position={[0, 0.8, -1.5]} castShadow receiveShadow>
 				<torusKnotBufferGeometry attach="geometry" args={[0.5, 0.1, 200, 32]} />
-				<meshPhysicalMaterial color={props.colors.object} roughness={0.5} metalness={0.5} clearcoat={0.5} />
+				<meshPhysicalMaterial color={props.colors.object} roughness={1} metalness={0} clearcoat={0.5} />
 			</mesh>
 		</Canvas>
 	);
