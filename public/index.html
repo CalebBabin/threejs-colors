@@ -23,6 +23,21 @@
 		work correctly both with client-side routing and a non-root public URL.
 		Learn how to configure a non-root public URL by running `npm run build`.
 	-->
+
+	<script>
+		if ('serviceWorker' in navigator) {
+			window.addEventListener('load', function () {
+				navigator.serviceWorker.register('/sw.js').then(function (registration) {
+					// Registration was successful
+					console.log('ServiceWorker registration successful with scope: ', registration.scope);
+				}, function (err) {
+					// registration failed :(
+					console.log('ServiceWorker registration failed: ', err);
+				});
+			});
+		}
+	</script>
+
 	<title>Color Picker - ThreeJS</title>
 </head>
 

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import Scene from './Scene';
 import * as THREE from 'three';
 import Color from './ColorInput';
+import InstallButton from './InstallButton';
+import Button from './common/Button';
 
 function randomColor(saturation = 0.3, lightness = 0.5, hueStart = 0, hueEnd = 360) {
 	return "#" + (new THREE.Color(`hsl(${Math.random() * hueEnd + hueStart}, ${Math.min(1, saturation) * 100}%, ${Math.min(1, lightness) * 100}%)`).getHexString());
@@ -50,6 +52,7 @@ function App() {
 	return (
 		<div className='w-full h-full'>
 			<Scene colors={colors} />
+			<InstallButton />
 			<div className='absolute top-0 left-0 p-4 rounded-br-xl bg-black bg-opacity-50 text-white'>
 				<div>
 					<Color value={colors.sun} onChange={(e) => setColors({ ...colors, sun: e.target.value })} /> Sun
@@ -72,15 +75,15 @@ function App() {
 				<div>
 					<Color value={colors.object} onChange={(e) => setColors({ ...colors, object: e.target.value })} /> Object
 				</div>
-				<button className='border rounded px-1 m-1 hover:bg-black active:bg-white active:text-black' onClick={() => {
+				<Button onClick={() => {
 					setColors({ ...colors, sun: '#FFFFFF', floor: '#DDDDDD', object: '#FFFFFF', shade: randomColor(), background: randomColor(0.5, 0.9) });
-				}}>Randomize</button>
+				}}>Randomize</Button>
 
-				<button className='border rounded px-1 m-1 hover:bg-black active:bg-white active:text-black' onClick={(e) => {
+				<Button onClick={(e) => {
 					updateURL();
 					navigator.clipboard.writeText(window.location.toString());
 					e.preventDefault();
-				}}>Copy Link</button>
+				}}>Copy Link</Button>
 			</div>
 		</div>
 	);
