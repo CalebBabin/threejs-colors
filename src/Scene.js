@@ -27,10 +27,6 @@ function Scene(props) {
 		sunColor.sub(new THREE.Color(props.colors.shade));
 	}
 
-	const ObjectMaterial = new THREE.MeshLambertMaterial({
-		color: props.colors.object,
-	});
-
 	return (
 		<Canvas
 			camera={{ fov: 40 }}
@@ -64,20 +60,25 @@ function Scene(props) {
 				<meshLambertMaterial attach="material" color={props.colors.floor} />
 			</mesh>
 
-			<mesh position={[0, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
+			<mesh position={[0, 0.5, 0]} castShadow receiveShadow>
 				<boxBufferGeometry attach="geometry" args={[1, 1, 1]} />
+				<meshLambertMaterial color={props.colors.object} />
 			</mesh>
-			<mesh position={[1.5, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
+			<mesh position={[0, 0.5, 1.5]} castShadow receiveShadow>
 				<sphereBufferGeometry attach="geometry" args={[0.5, 64, 64]} />
+				<meshPhysicalMaterial color={props.colors.object} roughness={0.5} metalness={0.5} clearcoat={0.5} />
 			</mesh>
-			<mesh position={[-1.5, 0.5, 0]} castShadow receiveShadow material={ObjectMaterial}>
+			<mesh position={[-1.5, 0.5, 0]} castShadow receiveShadow>
 				<cylinderBufferGeometry attach="geometry" args={[0.5, 0.5, 1, 64]} />
+				<meshLambertMaterial color={props.colors.object} />
 			</mesh>
-			<mesh position={[0, 0.5, 1.5]} castShadow receiveShadow material={ObjectMaterial}>
+			<mesh position={[1.5, 0.5, 0]} castShadow receiveShadow>
 				<octahedronBufferGeometry attach="geometry" args={[0.5, 0]} />
+				<meshLambertMaterial color={props.colors.object} />
 			</mesh>
-			<mesh position={[0, 0.8, -1.5]} castShadow receiveShadow material={ObjectMaterial}>
+			<mesh position={[0, 0.8, -1.5]} castShadow receiveShadow>
 				<torusKnotBufferGeometry attach="geometry" args={[0.5, 0.1, 200, 32]} />
+				<meshPhysicalMaterial color={props.colors.object} roughness={0.5} metalness={0.5} clearcoat={0.5} />
 			</mesh>
 		</Canvas>
 	);
