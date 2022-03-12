@@ -49,37 +49,28 @@ self.addEventListener('activate', event => {
 // The fetch handler serves responses for same-origin resources from a cache.
 // If no response is found, it populates the runtime cache with the response
 // from the network before returning it to the page.
-self.addEventListener('fetch', event => {
+self.addEventListener('fetch', async function (event) {
 	// Skip cross-origin requests, like those for Google Analytics.
 	if (event.request.url.startsWith(self.location.origin) && event.request.method === 'GET') {
-		//console.log('Handling fetch event for', event.request.url);
-		fetch(event.request)
-			.then(response => {
-				// Put a copy of the response in the runtime cache.
-				return caches.open(RUNTIME).then(cache => {
-					return cache.put(event.request, response.clone()).then(() => {
-						return response;
-					});
-				});
-			})
-			.catch(error => {
-				console.log('Fetch failed; returning offline page instead.', error);
-				event.respondWith(
-					caches.match(event.request).then(cachedResponse => {
-						if (cachedResponse) {
-							return cachedResponse;
-						}
-						return caches.open(RUNTIME).then(cache => {
-							return fetch(event.request).then(response => {
-								// Put a copy of the response in the runtime cache.
-								return cache.put(event.request, response.clone()).then(() => {
-									return response;
-								});
-							});
-						});
-					})
-				);
+		// Let the browser do its default thing
+		// for non-GET requests.
+		if (event.request.method != 'GET') return;
+
+		// Prevent the default, and handle the request ourselves.
+		event.respondWith(async function () {
+			// Try to get the response from a cache.
+			const cache = await caches.open(RUNTIME);
+			const cachedResponse = await cache.match(event.request);
+
+			if (cachedResponse) {
+				// If we found a match in the cache, return it, but also
+				// update the entry in the cache in the background.
+				event.waitUntil(cache.add(event.request));
+				return cachedResponse;
 			}
-			);
+
+			// If we didn't find a match in the cache, use the network.
+			return fetch(event.request);
+		}());
 	}
 });
