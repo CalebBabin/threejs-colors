@@ -66,7 +66,7 @@ function Scene(props) {
 			</mesh>
 			<mesh position={[0, 0.5, 1.5]} castShadow receiveShadow>
 				<sphereBufferGeometry attach="geometry" args={[0.5, 64, 64]} />
-				<meshPhysicalMaterial color={props.colors.object} roughness={0.5} metalness={0.5} clearcoat={0.5} />
+				<meshPhysicalMaterial color={props.colors.object} roughness={0} metalness={0} clearcoat={0.5} />
 			</mesh>
 			<mesh position={[-1.5, 0.5, 0]} castShadow receiveShadow>
 				<cylinderBufferGeometry attach="geometry" args={[0.5, 0.5, 1, 64]} />
