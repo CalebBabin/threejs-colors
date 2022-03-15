@@ -51,19 +51,22 @@ function App() {
 			<Scene colors={colors} />
 			<InstallButton />
 			<div className='absolute top-0 left-0 p-4 rounded-br-xl bg-black bg-opacity-50 text-white'>
-				<div>
+				<small className='mb-2 block' title='renderer.outputEncoding = THREE.sRGBEncoding;'>
+					encoding: sRGBEncoding
+				</small>
+				<div title='a Three.js directional light, intensity 1.0'>
 					<Color value={colors.sun} onChange={(e) => setColors({ ...colors, sun: e.target.value })} /> Sun
 				</div>
-				<div>
+				<div title='a Three.js ambient light, intensity 1.0'>
 					<Color value={colors.shade} onChange={(e) => setColors({ ...colors, shade: e.target.value })} /> Shade
 				</div>
-				<div>
+				<div title='Lambert material'>
 					<Color value={colors.floor} onChange={(e) => setColors({ ...colors, floor: e.target.value })} /> Floor
 				</div>
-				<div>
+				<div title='Fog and Background'>
 					<Color value={colors.background} onChange={(e) => setColors({ ...colors, background: e.target.value })} /> Background
 				</div>
-				<div>
+				<div title='Lambert and Physical materials'>
 					<Color value={colors.object} onChange={(e) => setColors({ ...colors, object: e.target.value })} /> Object
 				</div>
 				<Button onClick={() => {
