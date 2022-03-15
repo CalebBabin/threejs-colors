@@ -1,5 +1,5 @@
 import React from 'react'
-import { Canvas, useFrame } from '@react-three/fiber'
+import { Canvas, useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three';
 
 const cameraDistance = 4;
@@ -17,15 +17,14 @@ function CameraHandler() {
 		);
 		camera.lookAt(0, 0.25, 0);
 	});
+	useThree((props) => {
+		props.gl.outputEncoding = THREE.sRGBEncoding;
+	});
 	return <></>
 }
 
 function Scene(props) {
 	const sunColor = new THREE.Color(props.colors.sun);
-
-	if (props.colors.subtractive) {
-		sunColor.sub(new THREE.Color(props.colors.shade));
-	}
 
 	return (
 		<Canvas
@@ -51,7 +50,7 @@ function Scene(props) {
 				intensity={1}
 				color={props.colors.shade}
 			/>
-			<fog attach="fog" args={[props.colors.background, cameraDistance, 10]} />
+			<fog attach="fog" args={[props.colors.background, cameraDistance * 1.25, 10]} />
 			<CameraHandler />
 
 

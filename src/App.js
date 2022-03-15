@@ -16,14 +16,11 @@ const defaultColors = {
 	floor: "#DDDDDD",
 	background: randomColor(0.5, 0.9),
 	object: "#FFFFFF",
-	subtractive: false,
 };
 for (const key in defaultColors) {
 	if (Object.hasOwnProperty.call(defaultColors, key) && params.has(key)) {
 		if (params.get(key).length === 6) {
 			defaultColors[key] = '#' + params.get(key);
-		} else if (params.get(key).length === 1) {
-			defaultColors[key] = params.get(key) === '1' ? true : false;
 		}
 	}
 }
@@ -34,7 +31,7 @@ function App() {
 
 
 	const updateURL = () => {
-		const params = new URLSearchParams(window.location.search);
+		const params = new URLSearchParams();
 		for (const key in colors) {
 			if (Object.hasOwnProperty.call(colors, key)) {
 				if (typeof colors[key] === 'string') {
@@ -56,12 +53,6 @@ function App() {
 			<div className='absolute top-0 left-0 p-4 rounded-br-xl bg-black bg-opacity-50 text-white'>
 				<div>
 					<Color value={colors.sun} onChange={(e) => setColors({ ...colors, sun: e.target.value })} /> Sun
-				</div>
-				<div>
-					<input type="checkbox" checked={colors.subtractive} onChange={(e) => setColors({ ...colors, subtractive: e.target.checked })} id="subLight" /> <label htmlFor="subLight">Subtract shade from sun</label>
-					<div className='text-right'>
-						<small>(helps prevent peaking)</small>
-					</div>
 				</div>
 				<div>
 					<Color value={colors.shade} onChange={(e) => setColors({ ...colors, shade: e.target.value })} /> Shade
