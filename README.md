@@ -1,4 +1,4 @@
-# [ThreeJS Color Picker](https://three-colors.opl.io/)
+# ThreeJS Color Picker - [https://three-colors.opl.io/](https://three-colors.opl.io/)
 A simple way to experiment with light and material colors in three.js
 
 # Development
